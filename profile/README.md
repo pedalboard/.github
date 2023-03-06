@@ -1,1 +1,1 @@
-# Open Source Pedalboard Platform
+# Open Source Pedalboard Hardware and Software
