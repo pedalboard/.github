@@ -1,5 +1,7 @@
 # Open Pedalboard Hardware and Software Platform
 
+![Logo](img/pedalboard-logo-large.png)
+
 An open source platform for building pedalboard compoenents.
 
 More and more pedalboards are haveing components that offer MIDI capablities. However, reality shows that they are often incopatible
