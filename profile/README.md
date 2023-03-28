@@ -25,5 +25,6 @@ This project is different to most of them because it aims to be:
 - builder friendly (can be produced with simple tools avilable nearly everywhere)
 - re-use popular hardware modules that can be purchased wordlwide.
 - The form factor of the hardware is slighly bigger than most of the other projects allowing for more controllers and more processing power.
+- Less than a concrete product, this project offers a platform to build pedals on top.
 
 
