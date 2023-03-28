@@ -20,7 +20,7 @@ Of course this is not a new Idea, there are some projects and platforms alread a
 
 This project is different to most of them because it aims to be:
 
-- completely open source (hardware and software)
+- completely Free & Open Source (hardware and software) GPL Licensed
 - modular (if you only want MIDI, you can just not add the audio processing units)
 - builder friendly (can be produced with simple tools avilable nearly everywhere)
 - re-use popular hardware modules that can be purchased wordlwide.
