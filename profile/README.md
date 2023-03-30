@@ -26,6 +26,6 @@ This project is different to most of them because it aims to be:
 - re-use popular hardware modules that can be purchased wordlwide.
 - The form factor of the hardware is slighly bigger than most of the other projects allowing for more controllers and more processing power.
 - Less than a concrete product, this project offers a platform to build pedals on top.
-- The goal ist to build a useful tool for onstage usage, its not intended to be a playground to fiddle around on stage.
+- The goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
 
 
