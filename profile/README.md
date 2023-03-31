@@ -21,7 +21,7 @@ Of course this is not a new Idea, there are some projects and platforms alread a
 This project is different to most of them because it aims to be:
 
 - completely Free & Open Source (hardware and software) GPL Licensed
-- modular (if you only want MIDI, you can just not add the audio processing units)
+- modular: if you only want MIDI, you can just not add the audio processing units. This also has some reliabilty advantages. Even with problems on the audio system, the Midi controller will still work independently. 
 - builder friendly (can be produced with simple tools avilable nearly everywhere)
 - re-use popular hardware modules that can be purchased wordlwide.
 - The form factor of the hardware is slighly bigger than most of the other projects allowing for more controllers and more processing power.
