@@ -30,6 +30,6 @@ This project is different to most of them because it aims to be:
 
 ## Architecture
 
-![Architecture Overview](./digram/architecture.drawio.svg)
+![Architecture Overview](digram/architecture.drawio.svg)
 
 
