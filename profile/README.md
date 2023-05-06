@@ -28,4 +28,8 @@ This project is different to most of them because it aims to be:
 - Less than a concrete product, this project offers a platform to build pedals on top.
 - The goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
 
+## Architecture
+
+![Architecture Overview](./digram/architecture.drawio.svg)
+
 
