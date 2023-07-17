@@ -2,9 +2,9 @@
 
 ![Logo](img/pedalboard-logo-large.png)
 
-An open source platform for building pedalboard compoenents.
+An open source platform for building pedalboard components.
 
-More and more pedalboards are haveing components that offer MIDI capablities. However, reality shows that they are often incopatible
+More and more pedalboards are having components that offer MIDI capablities. However, reality shows that they are often incopatible
 or require some additional processing. 
 
 There are many commercial products around which offer MIDI foot controller cabablities. However these are often expensive solutions.
@@ -16,9 +16,7 @@ of these issues in a pretty simple way.
 But wait. Does it have to stop there? Wouldn't it be great to also add some Audio Processing Unit inside the box? 
 That would open endless possibilities for custom Stomp boxes and Pedaboards.
 
-Of course this is not a new Idea, there are some projects and platforms already around. 
-
-This project is different to most of them because it aims to be:
+This is not a new idea, there are some projects and platforms already around. But this project is different to most of them because it aims to be:
 
 - completely Free & Open Source (hardware and software) GPL Licensed
 - modular: if you only want MIDI, you can just not add the audio processing units. This also has some reliability advantages. Even with problems on the audio system, the Midi controller will still work independently. 
