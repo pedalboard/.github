@@ -10,7 +10,7 @@ or require some additional processing.
 There are many commercial products around which offer MIDI foot controller cabablities. However these are often expensive solutions.
 Also due to chip shortage smaller suppliers of such (very good) solutions are out of stock.
 
-Given the low techincal complexity of building a MIDI foot controller: an open source hard- and software platform could solve many
+Given the low technical complexity of building a MIDI foot controller: an open source hard- and software platform could solve many
 of these issues in a pretty simple way. 
 
 But wait. Does it have to stop there? Wouldn't it be great to also add some Audio Processing Unit inside the box? 
