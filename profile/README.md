@@ -22,9 +22,9 @@ This is not a new idea, there are some projects and platforms already around. Bu
 - modular: if you only want MIDI, you can just not add the audio processing units. This also has some reliability advantages. Even with problems on the audio system, the Midi controller will still work independently. 
 - builder friendly (can be produced with simple tools available nearly everywhere)
 - re-use popular hardware modules that can be purchased worldwide.
-- The form factor of the hardware is slightly bigger than most of the other projects allowing for more controllers and more processing power. The design is targeting a 180x120x35mm box.
-- Less than a concrete product, this project offers a platform to build pedals on top.
-- The goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
+- the form factor of the hardware is slightly bigger than most of the other projects allowing for more controllers and more processing power. The design is targeting a 180x120x35mm box.
+- less than a concrete product, this project offers a platform to build pedals on top.
+- the goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
 
 ## Architecture
 
