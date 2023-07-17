@@ -14,7 +14,7 @@ Given the low technical complexity of building a MIDI foot controller: an open s
 of these issues in a pretty simple way. 
 
 But wait. Does it have to stop there? Wouldn't it be great to also add some Audio Processing Unit inside the box? 
-That would open endless possibilities for custom stomp boxes and pedaboards.
+That would open endless possibilities for custom stomp boxes and pedalboards.
 
 This is not a new idea, there are some projects and platforms already around. But this project is different to most of them because it aims to be:
 
