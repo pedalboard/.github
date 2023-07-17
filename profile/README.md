@@ -4,7 +4,7 @@
 
 An open source platform for building pedalboard components.
 
-More and more pedalboards are having components that offer MIDI capablities. However, reality shows that they are often incopatible
+More and more pedalboards are having components that offer MIDI capabilities. However, reality shows that they are often incopatible
 or require some additional processing. 
 
 There are many commercial products around which offer MIDI foot controller cabablities. However these are often expensive solutions.
