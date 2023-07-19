@@ -28,6 +28,8 @@ This is not a new idea, there are some projects and platforms already around. Bu
 
 ## Architecture
 
+As mentioned above hardware architecture is modular. There are two independen processors for the MIDI processing and the Audio processing. They are connected over USB-MIDI.
+
 ![Architecture Overview](diagram/architecture.drawio.svg)
 
 
