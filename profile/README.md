@@ -26,6 +26,10 @@ This is not a new idea, there are some projects and platforms already around. Bu
 - less than a concrete product, this project offers a platform to build pedals on top.
 - the goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
 
+## Discussion
+
+Please join us on the [community Discord server](https://discord.gg/ncyKyryHAc).
+
 ## Architecture
 
 As mentioned above hardware architecture is modular. There are two independen processors for the MIDI processing and the Audio processing. They are connected over USB-MIDI.
