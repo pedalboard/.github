@@ -26,6 +26,9 @@ This is not a new idea, there are some projects and platforms already around. Bu
 - less than a concrete product, this project offers a platform to build pedals on top.
 - the goal ist to build a useful tool for life performance, its not intended to be a playground to fiddle around on stage.
 
+## Radically Open Source
+The Open Pedalboard Platform is fully Open Source. That means everything you need to build or modify the machine can be found on this GitHub page.
+
 ## Discussion
 
 Please join us on the [community Discord server](https://discord.gg/ncyKyryHAc).
