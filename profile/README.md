@@ -46,4 +46,11 @@ As mentioned above hardware architecture is modular. There are two independen pr
 
 ![Architecture Overview](diagram/architecture.drawio.svg)
 
+### Hardware Components
+- [Main Boaard (MIDI Controller)](https://github.com/pedalboard/pedalboard-hw)
+- [Sound Card (ADC/DAC)](https://github.com/pedalboard/pedalboard-soundcard)
+- [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring)
+
+
+
 
