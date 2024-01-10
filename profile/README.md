@@ -42,7 +42,7 @@ As mentioned above hardware architecture is modular. There are two independen pr
 |-------------------------------------------------------------------|-----------------------------------------------------|-------|
 | [Main Boaard](https://github.com/pedalboard/pedalboard-hw)        | Carrier for other modules and Midi Controller       | ![30 deg View](https://pedalboard.github.io/pedalboard-hw-site/latest/3D/pedalboard-hw-3D_blender_30deg.png)  |
 | [Sound Card](https://github.com/pedalboard/pedalboard-soundcard)  | ADC / DAC board                                     | ![30 deg View](https://pedalboard.github.io/pedalboard-soundcard-site/latest/3D/pedalboard-soundcard-3D_blender_30deg.png)       |
-| [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring) | RGB LED ring around foot button                     |<img src="https://github.com/pedalboard/pedalboard-led-ring-site/blob/main/latest/3D/pedalboard-led-ring-3D_blender_30deg.png"  alt="led-ring" height="150"">     |
+| [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring) | RGB LED ring around foot button                     |<img src="https://github.com/pedalboard/pedalboard-led-ring-site/blob/main/latest/3D/pedalboard-led-ring-3D_blender_30deg.png"  alt="led-ring" height="150">     |
 | [Mechanical Parts](https://github.com/pedalboard/pedalboard-case) | 3D printable mechanical parts for building the case |       |     
 
 
