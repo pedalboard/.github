@@ -1,6 +1,6 @@
 # Open Pedalboard Hardware and Software Platform
 
-![Logo](img/pedalboard-logo-large.png)
+![Logo](../img/pedalboard-logo-large.png)
 
 An open source platform for building pedalboard components.
 
