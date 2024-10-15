@@ -50,7 +50,7 @@ As mentioned above hardware architecture is modular. There are two independen pr
 
 | top view | rear view |
 |----------------|-----------------|
-| ![img/v4-top.png] | ![img/v4-rear.png] |
+| ![top](img/v4-top.png) | ![rear](img/v4-rear.png) |
 
 ## Radically Open Source
 
