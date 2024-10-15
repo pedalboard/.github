@@ -46,6 +46,12 @@ As mentioned above hardware architecture is modular. There are two independen pr
 | [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring) | RGB LED ring around foot button                     |<img src="https://github.com/pedalboard/pedalboard-led-ring-site/blob/main/latest/3D/pedalboard-led-ring-3D_blender_30deg.png"  alt="led-ring" height="150">     |
 | [Mechanical Parts](https://github.com/pedalboard/pedalboard-case) | 3D printable mechanical parts for building the case |       |
 
+### Assembly
+
+| top view | rear view |
+|----------------|-----------------|
+| ![img/v4-top.png] | ![img/v4-rear.png] |
+
 ## Radically Open Source
 
 The Open Pedalboard Platform is fully Open Source. That means everything you need to build or modify the machine can be found on this GitHub page. All tools that are used are also Open Source:
