@@ -48,9 +48,9 @@ As mentioned above hardware architecture is modular. There are two independen pr
 
 ### Assembly
 
-| top view | rear view |
-|----------------|-----------------|
-| ![top](img/v4-top.png) | ![rear](img/v4-rear.png) |
+| top view                  | rear view                   |
+|---------------------------|-----------------------------|
+| ![top](../img/v4-top.png) | ![rear](../img/v4-rear.png) |
 
 ## Radically Open Source
 
