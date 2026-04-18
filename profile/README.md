@@ -40,9 +40,9 @@ As mentioned above hardware architecture is modular. There are two independen pr
 
 | Component                                                         | Description                                         | Image |
 |-------------------------------------------------------------------|-----------------------------------------------------|-------|
-| [Main Board](https://github.com/pedalboard/pedalboard-hw)         | Carrier for other modules and MIDI controller       | ![30 deg View](https://pedalboard.github.io/pedalboard-hw/latest/3D/pedalboard-hw-3D_blender_30deg.png)  |
-| [Display Board](https://github.com/pedalboard/pedalboard-display) | Display board with LEDs and OLED displays           | ![30 deg View](https://pedalboard.github.io/pedalboard-display/latest/3D/pedalboard-display-3D_blender_30deg.png)       |
-| [Sound Card](https://github.com/pedalboard/pedalboard-soundcard)  | ADC / DAC board                                     | ![30 deg View](https://pedalboard.github.io/pedalboard-soundcard/latest/3D/pedalboard-soundcard-3D_blender_30deg.png)       |
+| [Main Board](https://pedalboard.github.io/pedalboard-hw/latest/)         | Carrier for other modules and MIDI controller       | ![30 deg View](https://pedalboard.github.io/pedalboard-hw/latest/3D/pedalboard-hw-3D_blender_30deg.png)  |
+| [Display Board](https://pedalboard.github.io/pedalboard-display/latest/) | Display board with LEDs and OLED displays           | ![30 deg View](https://pedalboard.github.io/pedalboard-display/latest/3D/pedalboard-display-3D_blender_30deg.png)       |
+| [Sound Card](https://pedalboard.github.io/pedalboard-soundcard/latest/)  | ADC / DAC board                                     | ![30 deg View](https://pedalboard.github.io/pedalboard-soundcard/latest/3D/pedalboard-soundcard-3D_blender_30deg.png)       |
 | [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring) | RGB LED ring around foot button                     |<img src="https://pedalboard.github.io/pedalboard-led-ring/latest/3D/pedalboard-led-ring-3D_blender_30deg.png"  alt="led-ring" height="150">     |
 | [Mechanical Parts](https://github.com/pedalboard/pedalboard-case) | 3D printable mechanical parts for building the case |       |
 
