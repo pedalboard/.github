@@ -77,18 +77,27 @@ All binaries embed `<semver>-<git-hash>`. Uncommitted builds show `<semver>-<has
 ## Key Learnings
 
 ### Architecture Decision: Protocol approach
-- Currently hybrid: OpenDeck `0x43` for MIDI config + UI, custom `0x44` for labels/extensions
-- CLI (`pedalboard-cli`) uses both protocols via bridge WebSocket for gitops workflow
-- If custom extensions keep growing, consider switching to direct config upload (YAML → binary → flash) instead of per-field SysEx mutation
-- Keep OpenDeck for UI/debugging even if primary config path changes
+- 0x44 label protocol removed — was dead code, never called at runtime
+- PE (Property Exchange) is now the primary config path for presets
+- OpenDeck `0x43` remains for web UI, encoder/analog hardware config, and SysEx debugging
+- Display reads labels directly from `pe_config` shared resource (no LabelStore middleman)
 
-### Architecture Decision: Direct action model (next evolution)
-- Primary path: YAML defines actions directly (on_press/on_release → MIDI messages + LED state)
-- Firmware executes actions and updates LEDs locally — no MIDI feedback loop
-- Supports multi-message sequences, radio groups, toggle, momentary, level
-- Config uploaded as binary blob to flash, firmware reads on boot
-- OpenDeck remains as secondary mode for web UI / live debugging / compatibility
-- This replaces the current approach of mapping YAML fields to OpenDeck SysEx parameters
+### Architecture Decision: Direct action model (current state)
+- PE presets define button actions (on_press → MIDI messages), labels, encoder/analog labels
+- Firmware executes button actions from PE config, OpenDeck still drives encoder/analog hardware
+- Config uploaded via MIDI-CI Property Exchange (postcard-serialized `Preset` structs)
+- Presets persist to flash via raw sector write (not sequential-storage)
+- Read-back via PE Get Property for verification
+- CLI pipeline: YAML → postcard → PE Set Property → flash → boot → display
+- Integration tests verify full round-trip: upload → reboot → pe-read → assert content
+
+### PE Config Pipeline
+- `pe_config: Config` shared resource holds all 32 presets in RAM (~45KB)
+- Upload: CLI sends PE Set Property per preset → firmware deserializes → stores in pe_config + flash
+- Boot: `preset_flash::load_all` in init (sync) → populates pe_config before tasks start
+- Read-back: PE Get Property → firmware reads raw bytes from flash XIP → replies
+- Display: reads labels from pe_config every 200ms, detects changes by comparison
+- Persistence: `preset_flash` module — one 4KB sector, `[magic][count][idx,len,data...]` layout
 
 ### Encoders
 - `rotary-encoder-embedded` v0.5.0 breaks detection, pin to v0.3.1 (rev d1b8795)
@@ -121,3 +130,15 @@ All binaries embed `<semver>-<git-hash>`. Uncommitted builds show `<semver>-<has
 - Use `heapless::Vec` to collect all events per cycle
 - `Mono::delay().await` in loop is less precise than `spawn_after` — both encoders still work at 1ms
 - USB send task must loop waiting for configured state, not return early
+
+### Stack and Memory Constraints (RP2040)
+- `Preset` struct is 1.4KB in memory (heapless Vecs reserve full capacity), only ~130 bytes serialized (postcard)
+- **Never return or hold a `Preset` across an await point** in async tasks — inflates state machine, causes stack overflow
+- `sequential-storage` map requires 4KB sector buffer — uses most of persist task's stack budget
+- Solution for preset persistence: raw flash reads/writes (sync) in `preset_flash` module, NOT sequential-storage
+- Load presets in `init` (large stack, sync context) not in async tasks
+- Save presets via `save_one()` with a `static mut` 4KB page buffer (no stack allocation)
+- `load_one()` reads directly from flash XIP (zero-copy) — safe in ISR context
+- `load_all()` uses callback pattern to avoid returning large data structures
+- USB_OUT_CAPACITY = 64 packets (PE Get Reply for a preset needs ~51 packets)
+- Bridge auto-reconnects but may miss re-enumeration after probe reset — restart bridge if needed
