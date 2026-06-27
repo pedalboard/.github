@@ -70,6 +70,7 @@ All binaries embed `<semver>-<git-hash>`. Uncommitted builds show `<semver>-<has
 - All code changes happen on the dev machine, never edit directly on CM5
 - Bridge auto-reconnects on firmware reboot/flash
 - Never use `--no-verify` on commits (CI catches what hooks miss)
+- Run `cd pedalboard-cli && ./tests/integration.sh` before committing/pushing firmware or protocol changes
 - `pedalboard-midi` uses `--config` patches for local opendeck/protocol deps — **never modify `Cargo.toml` `[patch]` sections**
 - Go binary on CM5 not in PATH — use `/usr/local/go/bin/go`
 
