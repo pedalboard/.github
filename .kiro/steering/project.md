@@ -134,6 +134,8 @@ All binaries embed `<semver>-<git-hash>`. Uncommitted builds show `<semver>-<has
 ### Stack and Memory Constraints (RP2040)
 - `Preset` struct is 1.4KB in memory (heapless Vecs reserve full capacity), only ~130 bytes serialized (postcard)
 - **Never return or hold a `Preset` across an await point** in async tasks — inflates state machine, causes stack overflow
+- **Never allocate `Config` (45KB) or `Preset` (1.4KB) as locals** — use statics. Applies to init AND async tasks.
+- Stack overflow only manifests when code paths are actually exercised (e.g. flash has data) — test with real data, not empty state
 - `sequential-storage` map requires 4KB sector buffer — uses most of persist task's stack budget
 - Solution for preset persistence: raw flash reads/writes (sync) in `preset_flash` module, NOT sequential-storage
 - Load presets in `init` (large stack, sync context) not in async tasks
