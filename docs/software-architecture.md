@@ -123,21 +123,14 @@ graph TD
 stateDiagram-v2
     [*] --> Idle
     
-    Idle --> ButtonPressed: Edge::Activate
-    ButtonPressed --> Idle: Edge::Deactivate (Momentary)
-    ButtonPressed --> Active: Toggle/RadioGroup
-    Active --> Idle: Toggle again
+    Idle --> ButtonPressed : Activate
+    ButtonPressed --> Idle : Deactivate (Momentary)
+    ButtonPressed --> Active : Toggle/RadioGroup
+    Active --> Idle : Toggle again
     
-    Idle --> LongPressWait: Activate (has on_long_press)
-    LongPressWait --> ShortPress: Release < 500ms
-    LongPressWait --> LongPress: Hold > 500ms
-    ShortPress --> Idle: fire on_press
-    LongPress --> Idle: fire on_long_press
-
-    state "LED State" as LED {
-        Momentary: on while pressed
-        Toggle: on/off alternates
-        RadioGroup: one active in group
-        Dim: 1/6 color when inactive
-    }
+    Idle --> LongPressWait : Activate (has on_long_press)
+    LongPressWait --> ShortPress : Release before 500ms
+    LongPressWait --> LongPress : Hold past 500ms
+    ShortPress --> Idle : fire on_press
+    LongPress --> Idle : fire on_long_press
 ```
