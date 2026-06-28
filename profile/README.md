@@ -22,7 +22,7 @@ Please join us on the [community Discord server](https://discord.gg/ncyKyryHAc).
 
 The hardware architecture is modular. Two independent processors handle MIDI and audio processing, connected over USB-MIDI.
 
-![Architecture Overview](https://raw.githubusercontent.com/pedalboard/.github/refs/heads/main/diagram/architecture.drawio.svg)
+![Architecture Overview](https://raw.githubusercontent.com/pedalboard/.github/refs/heads/main/docs/architecture.drawio.svg)
 
 ### Hardware Components
 
