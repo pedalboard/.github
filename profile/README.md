@@ -40,6 +40,7 @@ The hardware architecture is modular. Two independent processors handle MIDI and
 |-----------|-------------|
 | [MIDI Firmware](https://github.com/pedalboard/pedalboard-midi) | RP-2040 firmware (Rust) for MIDI control |
 | [ELK Audio OS](https://www.elk.audio/how-elk-audio-os-works) | Real-time audio processing on CM4/CM5 |
+| [Software Architecture](https://github.com/pedalboard/.github/blob/main/docs/software-architecture.md) | System overview, task structure, PE data flow |
 
 ### Assembly
 
