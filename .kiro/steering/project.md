@@ -29,9 +29,20 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 
 ### Deploy
 
-- Firmware: `cd pedalboard-midi && make flash` (DFU via bridge) or `make flash-probe` (SWD)
+- Firmware: `cd pedalboard-midi && make flash` (CLI → bootloader → HTTP upload to bridge)
+- Firmware (alt): `make flash-probe` (SWD via probe on CM5)
 - Bridge: `cd pedalboard-bridge && make deploy` (push, pull on CM5, build, restart)
 - CLI: `cargo build` (runs locally)
+
+### CLI Commands (primary interface for all device operations)
+
+- `pedalboard-cli pe-upload <file.yaml>` — upload presets
+- `pedalboard-cli pe-read <index>` — read back a preset
+- `pedalboard-cli monitor` — real-time MIDI output display
+- `pedalboard-cli flash <file.uf2>` — flash firmware (bootloader + HTTP upload)
+- `pedalboard-cli reboot` — reboot device
+- `pedalboard-cli bootloader` — enter UF2 bootloader mode
+- `pedalboard-cli reset` — factory reset (erases flash + EEPROM)
 
 ### Version Convention
 
