@@ -36,8 +36,8 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 
 ### CLI Commands (primary interface for all device operations)
 
-- `pedalboard-cli pe-upload <file.yaml>` — upload presets
-- `pedalboard-cli pe-read <index>` — read back a preset
+- `pedalboard-cli upload <file.yaml>` — upload presets + global config
+- `pedalboard-cli read <index>` — read back a preset
 - `pedalboard-cli monitor` — real-time MIDI output display
 - `pedalboard-cli flash <file.uf2>` — flash firmware (bootloader + HTTP upload)
 - `pedalboard-cli reboot` — reboot device
