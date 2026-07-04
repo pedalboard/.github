@@ -74,6 +74,7 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Go on CM5), CL
 
 - Business logic in `pedalboard-protocol` (pure, `#![no_std]`, testable without hardware)
 - `pe_handler.rs` is a thin hardware adapter only
+- **When extending the protocol**, follow `pedalboard-protocol/CONTRIBUTING.md` (checklist: protocol → CLI → firmware, docs locations, push order)
 
 ## OpenDeck Policy
 
