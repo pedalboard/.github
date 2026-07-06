@@ -2,9 +2,10 @@
 
 <img src="../img/pedalboard-logo-large.png" alt="Logo" width="600"/>
 
-An open source MIDI foot controller and neural amp modeler — the open
-hardware alternative to Morningstar and MOD Dwarf, built for guitarists who
-want full control over their rig.
+An open source MIDI foot controller and guitar processor — neural amp
+modeling, effects, and looper control on a fully open platform. The
+alternative to Morningstar and MOD Dwarf, built for guitarists who want
+full control over their rig.
 
 ## What It Does
 
