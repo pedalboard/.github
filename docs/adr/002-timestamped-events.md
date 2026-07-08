@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed (2026-07-05)
+Accepted (2026-07-08) — Implemented as Option A (Controller struct in protocol crate).
 
 ## Context
 
