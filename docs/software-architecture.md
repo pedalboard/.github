@@ -77,7 +77,7 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    PROTOCOL[pedalboard-protocol<br/>Config · Actions · PE framing]
+    PROTOCOL[midi-controller<br/>Config · Actions · PE framing]
     OPENDECK[opendeck<br/>SysEx protocol · Config]
     
     MIDI_FW[pedalboard-midi<br/>Firmware]

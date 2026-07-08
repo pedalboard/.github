@@ -61,8 +61,8 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Go on CM5), CL
 
 ### Push order (both repos changed)
 
-1. Push `pedalboard-protocol` first
-2. `cargo update` in `pedalboard-midi` (clear `~/.cargo/git/db/pedalboard-protocol-*` if stale)
+1. Push `midi-controller` first
+2. `cargo update` in `pedalboard-midi` (clear `~/.cargo/git/db/midi-controller-*` if stale)
 3. Verify `Cargo.lock` has new commit hash, then push `pedalboard-midi`
 
 ### Pre-commit hooks
@@ -72,9 +72,9 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Go on CM5), CL
 
 ### Protocol-first rule
 
-- Business logic in `pedalboard-protocol` (pure, `#![no_std]`, testable without hardware)
+- Business logic in `midi-controller` (pure, `#![no_std]`, testable without hardware)
 - `pe_handler.rs` is a thin hardware adapter only
-- **When extending the protocol**, follow `pedalboard-protocol/CONTRIBUTING.md` (checklist: protocol → CLI → firmware, docs locations, push order)
+- **When extending the protocol**, follow `midi-controller/CONTRIBUTING.md` (checklist: protocol → CLI → firmware, docs locations, push order)
 
 ## OpenDeck Policy
 

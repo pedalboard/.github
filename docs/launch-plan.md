@@ -122,7 +122,7 @@ Validated: 3.4% CPU, 1.3ms buffer latency, 64 frames @ 48kHz on CM5. See issue #
 |-------|-----------|---------|
 | Hardware | PCBs + case | CERN-OHL-P |
 | MIDI firmware | Rust/RTIC on RP2040 | GPL |
-| Protocol | pedalboard-protocol | Apache/MIT |
+| Protocol | midi-controller | Apache/MIT |
 | Bridge | Go on CM5 | GPL |
 | Audio host | mod-host | GPL |
 | Amp modeling | AIDA-X / RTNeural | GPL / BSD |

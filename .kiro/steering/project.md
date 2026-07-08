@@ -12,7 +12,7 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 | `pedalboard-led-ring` | KiCad 9 | RGB LED ring per foot button | — |
 | `pedalboard-case` | OpenSCAD | 3D printable enclosure | — |
 | `pedalboard-midi` | Rust (RTIC) | RP2040 firmware | RP2040 |
-| `pedalboard-protocol` | Rust (`#![no_std]`) | Shared config types + MIDI-CI PE framing | library |
+| `midi-controller` | Rust (`#![no_std]`) | MIDI controller engine: input processing, LED rendering, preset state, PE framing | library |
 | `pedalboard-cli` | Rust | Config upload (OpenDeck SysEx + PE) | dev machine |
 | `pedalboard-bridge` | Go | WebSocket↔MIDI bridge (raw ALSA I/O) | CM5 |
 | `pedalboard-sim` | Rust | Virtual pedalboard simulator (TUI + Web UI) | dev machine |

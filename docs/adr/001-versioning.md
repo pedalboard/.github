@@ -11,7 +11,7 @@ The pedalboard platform has multiple interfaces where version compatibility matt
 1. **Flash storage** — presets serialized by one firmware version, read by another after OTA update
 2. **YAML setlist schema** — user-authored files consumed by CLI, future web UI, or third-party tools
 3. **PE wire protocol** — MIDI-CI Property Exchange messages between CLI/bridge and firmware
-4. **Rust crate API** — `pedalboard-protocol` consumed by firmware and CLI at compile time
+4. **Rust crate API** — `midi-controller` consumed by firmware and CLI at compile time
 
 Each has different consumers, change frequencies, and compatibility requirements.
 
@@ -23,7 +23,7 @@ Use **two independent version numbers** with different semantics:
 
 **What:** A single `u8` stored as the first byte of every serialized preset/config blob in flash.
 
-**Where:** Defined as `PRESET_SCHEMA_VERSION` in `pedalboard-protocol/src/config.rs`. Checked by firmware on boot.
+**Where:** Defined as `PRESET_SCHEMA_VERSION` in `midi-controller/src/config.rs`. Checked by firmware on boot.
 
 **When to bump:** Whenever the postcard-serialized layout of `Preset` or `GlobalConfig` changes (added/removed/reordered fields, changed types).
 
@@ -66,7 +66,7 @@ The Property Exchange protocol (MIDI-CI SysEx framing) is not independently vers
 
 If this changes (e.g., third-party control apps), version negotiation can be added via MIDI-CI Discovery (already part of the spec).
 
-### 4. Rust Crate (`pedalboard-protocol`)
+### 4. Rust Crate (`midi-controller`)
 
 Uses standard Cargo semver for source API compatibility. This is separate from the serialization format — the crate can have a minor version bump (new public API) without changing the flash format, or vice versa.
 

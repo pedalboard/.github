@@ -10,7 +10,7 @@ The protocol crate is the product's brain. The firmware is just its hands.
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  pedalboard-protocol (the "midi-controller" crate)  │
+│  midi-controller                                    │
 │                                                     │
 │  All behavior:                                      │
 │  • Button logic (toggle, momentary, radio group)    │
