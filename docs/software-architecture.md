@@ -7,16 +7,22 @@ graph TB
     subgraph "Dev Machine"
         YAML[YAML Presets]
         CLI[pedalboard-cli]
+        SIM[pedalboard-sim<br/>Virtual pedalboard]
         YAML --> CLI
     end
 
     subgraph "CM5 (Raspberry Pi)"
-        BRIDGE[pedalboard-bridge<br/>Go · WebSocket↔MIDI]
+        JACK[JACK Audio/MIDI Server]
+        BRIDGE[pedalboard-bridge<br/>Go · JACK MIDI client]
+        MODHOST[mod-host<br/>LV2 plugin host]
+        MODUI[MOD UI<br/>Plugin chain designer]
+        JACK --> BRIDGE
+        BRIDGE -->|TCP| MODHOST
+        MODUI -->|TCP| MODHOST
     end
 
     subgraph "RP2040 (Firmware)"
         USB[USB MIDI]
-        UART[DIN MIDI]
         PE[PE Handler<br/>Actions · LEDs · State]
         OD[OpenDeck<br/>SysEx · Web UI]
         FLASH[Flash Storage<br/>Preset Persistence]
@@ -26,13 +32,11 @@ graph TB
     end
 
     CLI -->|WebSocket| BRIDGE
-    BRIDGE -->|Raw MIDI| USB
-    USB --> PE
-    USB --> OD
+    SIM -->|JACK MIDI| JACK
+    USB -->|a2jmidid| JACK
     INPUT --> PE
     INPUT --> OD
     PE --> USB
-    PE --> UART
     PE --> LEDS
     PE --> DISP
     PE --> FLASH
@@ -40,6 +44,56 @@ graph TB
     OD --> LEDS
     FLASH --> PE
 ```
+
+## MIDI Routing (JACK MIDI)
+
+All MIDI flows through JACK — same routing graph as audio.
+
+```mermaid
+graph LR
+    subgraph "MIDI Sources"
+        RP[RP2040 USB<br/>via a2jmidid]
+        SIM[pedalboard-sim<br/>JACK client]
+    end
+
+    subgraph "JACK MIDI"
+        IN[pedalboard-bridge:midi_in]
+        OUT[pedalboard-bridge:midi_out]
+    end
+
+    subgraph "Consumers"
+        BRIDGE[Bridge logic<br/>Program Change → patch switch<br/>SysEx → WebSocket]
+        MODHOST[mod-host:midi_in<br/>Plugin MIDI control]
+    end
+
+    RP -->|auto-connect<br/>pattern: pedalboard| IN
+    SIM -->|auto-connect<br/>pattern: pedalboard| IN
+    IN --> BRIDGE
+    OUT --> RP
+```
+
+### Auto-connect
+
+The bridge uses `-midi <pattern>` to auto-connect any JACK MIDI output port matching the pattern (case-insensitive). It polls every 2 seconds and reconnects after device reboot.
+
+```bash
+# On CM5: matches "a2j:pedalboard OpenDeck ..."
+pedalboard-bridge -midi pedalboard -addr :8080 -audio /etc/pedalboard/audio-patches.json
+
+# In Docker dev: matches "pedalboard-sim:midi_out"
+pedalboard-bridge -midi pedalboard -addr :8080 -audio /etc/pedalboard/audio-patches.json
+```
+
+### CM5 setup
+
+The RP2040 appears as a raw ALSA MIDI device (`/dev/snd/midiC*D*`). JACK exposes it as a JACK MIDI port via one of:
+
+- **`-Xalsarawmidi`** flag on jackd (built-in, no extra daemon)
+- **`a2jmidid -e`** (separate daemon, more control)
+
+### Docker dev setup
+
+The simulator is a native JACK MIDI client — no bridging needed. Both the simulator and bridge register as JACK clients on the same JACK server inside the container.
 
 ## Firmware Internals
 
@@ -57,11 +111,11 @@ sequenceDiagram
 
     CLI->>Bridge: WebSocket /raw
     CLI->>Bridge: PE Set Property (postcard preset)
-    Bridge->>FW: USB MIDI SysEx
+    Bridge->>FW: JACK MIDI out → USB
     FW->>FW: deserialize Preset
     FW->>Flash: save_one(idx, data)
     FW->>FW: update pe_config
-    FW->>Bridge: PE Set Reply (ACK)
+    FW->>Bridge: USB → JACK MIDI in
     Bridge->>CLI: WebSocket ACK
 
     Note over FW: On boot
@@ -70,7 +124,7 @@ sequenceDiagram
     Note over FW: On button press
     FW->>FW: PeHandler.handle_events()
     FW->>FW: led_state() → LED rings
-    FW->>Bridge: USB MIDI (CC/Note/PC)
+    FW->>Bridge: USB → JACK MIDI (CC/Note/PC)
 ```
 
 ## Module Dependency
@@ -82,12 +136,13 @@ graph TD
     
     MIDI_FW[pedalboard-midi<br/>Firmware]
     CLI_APP[pedalboard-cli<br/>YAML → PE upload]
-    BRIDGE_APP[pedalboard-bridge<br/>WebSocket↔MIDI]
+    SIM_APP[pedalboard-sim<br/>Virtual pedalboard]
+    BRIDGE_APP[pedalboard-bridge<br/>JACK MIDI + WebSocket + mod-host]
 
     MIDI_FW --> PROTOCOL
     MIDI_FW --> OPENDECK
     CLI_APP --> PROTOCOL
-    BRIDGE_APP -.->|raw passthrough| MIDI_FW
+    SIM_APP --> PROTOCOL
+    BRIDGE_APP -.->|JACK MIDI| MIDI_FW
+    CLI_APP -->|WebSocket| BRIDGE_APP
 ```
-
-
