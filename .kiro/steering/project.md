@@ -15,6 +15,8 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 | `pedalboard-protocol` | Rust (`#![no_std]`) | Shared config types + MIDI-CI PE framing | library |
 | `pedalboard-cli` | Rust | Config upload (OpenDeck SysEx + PE) | dev machine |
 | `pedalboard-bridge` | Go | WebSocket↔MIDI bridge (raw ALSA I/O) | CM5 |
+| `pedalboard-sim` | Rust | Virtual pedalboard simulator (TUI + Web UI) | dev machine |
+| `pedalboard-os` | Docker/Makefile | System config (JACK + mod-host + bridge) | CM5 |
 | `pedalboard-graphics` | Rust | Display UI prototype (desktop sim) | dev machine |
 | `dotgithub` | — | Org profile, architecture diagram, logos | — |
 

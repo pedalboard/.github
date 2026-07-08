@@ -72,6 +72,7 @@ The hardware architecture is modular. Two independent processors handle MIDI and
 | Component | Description |
 |-----------|-------------|
 | [MIDI Firmware](https://github.com/pedalboard/pedalboard-midi) | RP-2040 firmware (Rust/RTIC) — buttons, LEDs, encoders, MIDI, display |
+| [Simulator](https://github.com/pedalboard/pedalboard-sim) | Virtual pedalboard (TUI + Web UI) — develop and test without hardware |
 | [CLI](https://github.com/pedalboard/pedalboard-cli) | Configuration tool — YAML setlists → device upload |
 | [Bridge](https://github.com/pedalboard/pedalboard-bridge) | WebSocket↔MIDI bridge + audio patch switching via mod-host |
 | [OS](https://github.com/pedalboard/pedalboard-os) | System config — Debian + JACK + mod-host auto-start |
