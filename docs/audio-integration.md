@@ -67,11 +67,103 @@ EOF
     http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader &
 ```
 
+### What works: mod-host preset_load (preferred method)
+
+mod-host supports AIDA-X model loading via `preset_load` when using a proper LV2 preset bundle.
+
+**Requirements:**
+1. Create an LV2 preset bundle (directory with `manifest.ttl` + `presets.ttl`)
+2. Register it with `bundle_add`
+3. Load presets by URI with `preset_load`
+
+**Preset bundle structure:**
+
+```
+/etc/pedalboard/presets.lv2/
+├── manifest.ttl
+└── presets.ttl
+```
+
+`manifest.ttl`:
+```turtle
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://pedalboard.local/presets#california-clean>
+    a pset:Preset ;
+    lv2:appliesTo <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader> ;
+    rdfs:seeAlso <presets.ttl> .
+
+<http://pedalboard.local/presets#british-rhythm>
+    a pset:Preset ;
+    lv2:appliesTo <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader> ;
+    rdfs:seeAlso <presets.ttl> .
+```
+
+`presets.ttl`:
+```turtle
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://pedalboard.local/presets#california-clean>
+    a pset:Preset ;
+    rdfs:label "California Clean" ;
+    lv2:appliesTo <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader> ;
+    state:state [
+        <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader#json> </etc/pedalboard/models/tw40_california_clean_deerinkstudios.json>
+    ] ;
+    lv2:port [
+        lv2:symbol "PREGAIN" ;
+        pset:value 0.5
+    ] , [
+        lv2:symbol "MASTER" ;
+        pset:value 0.8
+    ] .
+
+<http://pedalboard.local/presets#british-rhythm>
+    a pset:Preset ;
+    rdfs:label "British Rhythm" ;
+    lv2:appliesTo <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader> ;
+    state:state [
+        <http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader#json> </etc/pedalboard/models/tw40_british_rhythm_deerinkstudios.json>
+    ] ;
+    lv2:port [
+        lv2:symbol "PREGAIN" ;
+        pset:value 0.9
+    ] , [
+        lv2:symbol "MASTER" ;
+        pset:value 0.6
+    ] .
+```
+
+**mod-host commands:**
+```
+bundle_add /etc/pedalboard/presets.lv2       → resp 0
+preset_load 0 http://pedalboard.local/presets#california-clean  → resp 0
+preset_load 0 http://pedalboard.local/presets#british-rhythm    → resp 0
+```
+
+**To update presets at runtime** (e.g., after editing the TTL files):
+```
+bundle_remove /etc/pedalboard/presets.lv2 ""
+bundle_add /etc/pedalboard/presets.lv2
+```
+
+**Key points:**
+- Model path in `state:state` must be an **absolute path** to the .json/.aidax file
+- Model files must be valid JSON (neural network weights), not HTML/binary
+- The neural network reloads on each `preset_load` (~2 seconds on CM5)
+- Parameters (PREGAIN, MASTER, etc.) are set atomically with the model load
+- Only one TCP client can connect to mod-host at a time (bridge holds the connection)
+
 ### What doesn't work
-- `mod-host` TCP `param_set` for model file path (not supported)
-- `mod-host` TCP `preset_load` with state.ttl (error -104)
-- `mod-host` TCP `state_set` (not a valid command)
-- Setting PARAM1/PARAM2 to file path (these are numeric controls, not file params)
+- `param_set` for model file path (not a control port, it's atom:Path state)
+- `state_set` (not a valid mod-host command)
+- Setting PARAM1/PARAM2 to file path (these are numeric controls)
 
 ### State key for model file
 ```
@@ -81,10 +173,15 @@ Type: atom:Path
 
 ## Available Models
 ```
-/home/laenzi/models/JC120-Clean.aidax      (147KB, Roland JC120 clean)
-/home/laenzi/models/Fender_Twin_Clean.aidax (300KB, Fender Twin clean)
-/home/laenzi/models/Marshall_JCM800.aidax   (300KB, Marshall crunch/gain)
+/etc/pedalboard/models/tw40_california_clean_deerinkstudios.json
+/etc/pedalboard/models/tw40_california_crunch_deerinkstudios.json
+/etc/pedalboard/models/tw40_british_rhythm_deerinkstudios.json
+/etc/pedalboard/models/tw40_blues_deluxe_deerinkstudios.json
+/etc/pedalboard/models/tw40_blues_solo_deerinkstudios.json
 ```
+
+Note: Models must be valid JSON files (neural network weights). Files downloaded
+from GitHub web UI may be HTML pages — always verify with `file <path>`.
 
 ## mod-host Protocol Notes
 - TCP socket on port 5555
@@ -92,44 +189,63 @@ Type: atom:Path
 - Responses are **null-byte terminated** (not newline!)
 - `add <uri> <id>` → `resp 0\x00` on success
 - `param_set <id> <symbol> <value>` → `resp 0\x00`
+- `preset_load <id> <preset_uri>` → `resp 0\x00` (loads state including atom:Path)
+- `bundle_add <path>` → `resp 0\x00` (registers LV2 bundle with preset definitions)
+- `bundle_remove <path> ""` → `resp 0\x00` (unregisters bundle, allows re-add)
 - `remove -1` removes all instances
 - `bypass <id> <0|1>` toggles bypass
+- **Only one TCP client at a time** — bridge holds the connection
 
 ## Bridge Integration (pedalboard-bridge)
 - Detects MIDI Program Change from RP2040
 - Sends mod-host commands via TCP
 - Audio config: `audio-patches.json` (capture/playback ports, plugin chain per patch)
-- Current issue: remove+add causes audio click on switch
+- On preset switch: `preset_load` for AIDA-X model + `param_set` for effects
 
-## Next Steps (Issue #89)
+## Architecture Decision (2026-07-10)
 
-### Recommended architecture: parallel instances with bypass
+**Chosen stack:** mod-host + MOD UI + preset bundles
+
+- **Design:** MOD UI (browser-based, localhost:8888) for plugin chain design
+- **Runtime:** mod-host (headless, TCP API) for live plugin hosting
+- **Model switching:** `preset_load` with LV2 preset bundles (validated working)
+- **Bridge role:** JACK MIDI → program change → mod-host preset_load
+- **Future migration path:** When/if mod-host becomes limiting, rewrite bridge
+  as Rust in-process LV2 host (livi-rs + state support) or switch to Carla headless
+
+### Why not alternatives?
+- **jalv subprocesses:** Works but unwieldy for deep chains (one process per plugin)
+- **Carla headless:** Great plugin host but poor external control API (no clean project switching)
+- **livi-rs (Rust in-process):** Missing LV2 state support — can't load AIDA-X models
+- **mod-host:** Clean TCP API, supports state/presets/worker, single process for all plugins ✅
+
+### Recommended architecture: preset_load switching
 ```
-                    ┌─ effect_0 (Clean model)    ─┐
-capture_2 ──┬──────┼─ effect_1 (Crunch model)   ─┼────── playback_2
-             │      └─ effect_2 (High Gain model) ─┘
-             │
-             └── Only ONE instance un-bypassed at a time
+Bridge preset config:
+  preset 0 → bundle_add + preset_load california-clean
+  preset 1 → bundle_add + preset_load british-rhythm
+  preset 2 → bundle_add + preset_load blues-deluxe
+
+Audio routing (static, set up once at boot):
+  system:capture_2 → effect_0:in → effect_0:out → system:playback_2
 ```
 
-- Start 3 jalv instances at boot (each with own state dir + model)
-- All connected in parallel: capture → all inputs, all outputs → playback  
-- Bridge switches by toggling JACK connections (disconnect old, connect new)
-- Or: use bypass parameter on AIDA-X (NETBYPASS symbol)
-- Zero audio gap on switch
+- Single AIDA-X instance in mod-host, model swapped via `preset_load`
+- Additional effects (reverb, delay) as separate mod-host instances
+- Expression pedal CC → `param_set` on active instance
+- ~2 seconds model reload time (acceptable for preset switching between songs)
 
-### Implementation tasks
-1. Create state directories per model (state.ttl + .aidax file)
-2. Start multiple jalv instances on boot (systemd service or bridge startup)
-3. Bridge manages which instance is active (JACK connect/disconnect)
-4. PC message from RP2040 → bridge selects instance
-5. Expression pedal CC → bridge forwards to active instance's PREGAIN/MASTER
+### Implementation tasks (remaining)
+1. Deploy preset bundle to `/etc/pedalboard/presets.lv2` on CM5
+2. Bridge: `bundle_add` at startup, `preset_load` on program change
+3. Bridge: `param_set` for expression pedal CC routing
+4. MOD UI: design full chains (amp + effects), export as preset bundles
 
 ### MOD UI
 - Installed at `/opt/mod-ui`, runs on port 8888
 - Can load plugins and manage parameters via browser
 - Useful for initial setup/experimentation
-- Not needed for live switching (bridge handles it)
+- Pedalboard .ttl files can be converted to preset bundles for mod-host
 
 ## Quick Test Commands
 
@@ -144,13 +260,22 @@ amixer -c 3 set ADC 40%
 # Direct loopback (clean guitar test)
 jack_connect system:capture_2 system:playback_2
 
-# With AIDA-X (via jalv + model)
-(tail -f /dev/null) | jalv -l /tmp/model-state -n AIDAX \
-    http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader &
-sleep 3
-jack_connect system:capture_2 AIDAX:lv2_audio_in_1
-jack_connect AIDAX:lv2_audio_out_1 system:playback_2
-
-# Kill everything
-killall jalv tail jackd
+# With mod-host (preferred)
+# mod-host should already be running via systemd
+# Connect via TCP:
+python3 -c "
+import socket
+s = socket.socket(); s.connect(('localhost', 5555)); s.settimeout(10)
+def cmd(c):
+    s.sendall((c+'\n').encode())
+    d=b''; 
+    while b'\x00' not in d: d+=s.recv(4096)
+    print(f'{c} => {d.replace(b\"\\x00\",b\"\").decode().strip()}')
+cmd('add http://aidadsp.cc/plugins/aidadsp-bundle/rt-neural-loader 0')
+cmd('bundle_add /etc/pedalboard/presets.lv2')
+cmd('preset_load 0 http://pedalboard.local/presets#california-clean')
+cmd('connect system:capture_2 effect_0:lv2_audio_in_1')
+cmd('connect effect_0:lv2_audio_out_1 system:playback_2')
+s.close()
+"
 ```
