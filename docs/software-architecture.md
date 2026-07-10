@@ -58,7 +58,7 @@ graph LR
     end
 
     subgraph "Consumers"
-        BRIDGE[Bridge logic<br/>Program Change → patch switch<br/>SysEx → WebSocket]
+        BRIDGE[Bridge logic<br/>Program Change → snapshot switch<br/>CC → expression routing<br/>SysEx → WebSocket]
         MODHOST[mod-host:midi_in<br/>Plugin MIDI control]
     end
 
@@ -70,14 +70,11 @@ graph LR
 
 ### Auto-connect
 
-The bridge uses `-midi <pattern>` to auto-connect any JACK MIDI output port matching the pattern (case-insensitive). It polls every 2 seconds and reconnects after device reboot.
+The bridge uses `--midi <pattern>` to auto-connect any JACK MIDI port whose alias matches the pattern (case-insensitive). Uses JACK's port registration callback for instant detection (~100ms) and reconnects after device reboot.
 
 ```bash
-# On CM5: matches "a2j:pedalboard ...""
-pedalboard-bridge -midi pedalboard -addr :8080 -audio /etc/pedalboard/audio-patches.json
-
-# In Docker dev: matches "pedalboard-sim:midi_out"
-pedalboard-bridge -midi pedalboard -addr :8080 -audio /etc/pedalboard/audio-patches.json
+# On CM5:
+pedalboard-bridge-rust --midi pedalboard-midi --addr 0.0.0.0:8080 --audio /etc/pedalboard/audio-rig.yaml --modhost localhost:5555
 ```
 
 ### CM5 setup
@@ -135,7 +132,6 @@ graph TD
     BRIDGE_APP[pedalboard-bridge<br/>JACK MIDI + WebSocket + mod-host]
 
     MIDI_FW --> PROTOCOL
-    MIDI_FW --> OPENDECK
     CLI_APP --> PROTOCOL
     SIM_APP --> PROTOCOL
     BRIDGE_APP -.->|JACK MIDI| MIDI_FW
