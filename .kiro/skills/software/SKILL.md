@@ -1,6 +1,6 @@
 ---
 name: software
-description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Go on CM5), CLI, flash persistence, and stack constraints. Use when working on firmware, protocol, bridge, CLI, or debugging embedded software.
+description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), CLI, flash persistence, and stack constraints. Use when working on firmware, protocol, bridge, CLI, or debugging embedded software.
 ---
 
 # Software Knowledge
@@ -34,7 +34,7 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Go on CM5), CL
 
 ## Bridge (summary)
 
-- Go WebSocket↔MIDI on CM5. Use `/usr/local/go/bin/go`. Restart bridge if it misses re-enumeration after probe reset.
+- Rust (tokio + axum + jack-rs) WebSocket↔MIDI on CM5. Restart bridge if it misses re-enumeration after probe reset.
 
 ## Firmware Gotcha
 

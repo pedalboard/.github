@@ -13,7 +13,7 @@ graph TB
 
     subgraph "CM5 (Raspberry Pi)"
         JACK[JACK Audio/MIDI Server]
-        BRIDGE[pedalboard-bridge<br/>Go · JACK MIDI client]
+        BRIDGE[pedalboard-bridge<br/>Rust · JACK MIDI client]
         MODHOST[mod-host<br/>LV2 plugin host]
         MODUI[MOD UI<br/>Plugin chain designer]
         JACK --> BRIDGE

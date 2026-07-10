@@ -14,7 +14,7 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 | `pedalboard-midi` | Rust (RTIC) | RP2040 firmware | RP2040 |
 | `midi-controller` | Rust (`#![no_std]`) | MIDI controller engine: input processing, LED rendering, preset state, PE framing | library |
 | `pedalboard-cli` | Rust | Config upload (OpenDeck SysEx + PE) | dev machine |
-| `pedalboard-bridge` | Go | WebSocket↔MIDI bridge (raw ALSA I/O) | CM5 |
+| `pedalboard-bridge` | Rust | WebSocket↔MIDI bridge (JACK MIDI + mod-host) | CM5 |
 | `pedalboard-sim` | Rust | Virtual pedalboard simulator (TUI + Web UI) | dev machine |
 | `pedalboard-os` | Docker/Makefile | System config (JACK + mod-host + bridge) | CM5 |
 | `pedalboard-graphics` | Rust | Display UI prototype (desktop sim) | dev machine |
@@ -54,7 +54,6 @@ All binaries embed `<semver>-<git-hash>`. Uncommitted builds show `+dev` suffix.
 
 - Run `cd pedalboard-cli && ./tests/integration.sh` before pushing firmware or protocol changes
 - `pedalboard-midi` uses `--config` patches for local deps — **never modify `Cargo.toml` `[patch]` sections**
-- Go binary on CM5 not in PATH — use `/usr/local/go/bin/go`
 - Bridge auto-reconnects on firmware reboot/flash
 
 ## Licensing
