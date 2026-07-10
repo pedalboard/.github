@@ -24,7 +24,6 @@ graph TB
     subgraph "RP2040 (Firmware)"
         USB[USB MIDI]
         PE[PE Handler<br/>Actions · LEDs · State]
-        OD[OpenDeck<br/>SysEx · Web UI]
         FLASH[Flash Storage<br/>Preset Persistence]
         DISP[Display Task<br/>SSD1327 × 2]
         LEDS[LED Writer<br/>WS2812 × 98]
@@ -35,13 +34,10 @@ graph TB
     SIM -->|JACK MIDI| JACK
     USB -->|a2jmidid| JACK
     INPUT --> PE
-    INPUT --> OD
     PE --> USB
     PE --> LEDS
     PE --> DISP
     PE --> FLASH
-    OD --> USB
-    OD --> LEDS
     FLASH --> PE
 ```
 
@@ -77,7 +73,7 @@ graph LR
 The bridge uses `-midi <pattern>` to auto-connect any JACK MIDI output port matching the pattern (case-insensitive). It polls every 2 seconds and reconnects after device reboot.
 
 ```bash
-# On CM5: matches "a2j:pedalboard OpenDeck ..."
+# On CM5: matches "a2j:pedalboard ...""
 pedalboard-bridge -midi pedalboard -addr :8080 -audio /etc/pedalboard/audio-patches.json
 
 # In Docker dev: matches "pedalboard-sim:midi_out"
@@ -98,7 +94,7 @@ The simulator is a native JACK MIDI client — no bridging needed. Both the simu
 ## Firmware Internals
 
 > Task architecture, state machines, and storage details live in the firmware repo:
-> [`pedalboard-midi/docs/architecture.md`](https://github.com/opendeckproject/pedalboard-midi/blob/main/docs/architecture.md)
+> [`pedalboard-midi/docs/architecture.md`](https://github.com/pedalboard/pedalboard-midi/blob/main/docs/architecture.md)
 
 ## PE Data Flow
 
@@ -132,7 +128,6 @@ sequenceDiagram
 ```mermaid
 graph TD
     PROTOCOL[midi-controller<br/>Config · Actions · PE framing]
-    OPENDECK[opendeck<br/>SysEx protocol · Config]
     
     MIDI_FW[pedalboard-midi<br/>Firmware]
     CLI_APP[pedalboard-cli<br/>YAML → PE upload]

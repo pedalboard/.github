@@ -1,4 +1,4 @@
-# OpenDeck Pedalboard Project
+# Open Pedalboard Project
 
 ## Repositories
 
@@ -13,7 +13,7 @@ All repos live under `/home/laenzi/projects/gh/pedalboard/`:
 | `pedalboard-case` | OpenSCAD | 3D printable enclosure | — |
 | `pedalboard-midi` | Rust (RTIC) | RP2040 firmware | RP2040 |
 | `midi-controller` | Rust (`#![no_std]`) | MIDI controller engine: input processing, LED rendering, preset state, PE framing | library |
-| `pedalboard-cli` | Rust | Config upload (OpenDeck SysEx + PE) | dev machine |
+| `pedalboard-cli` | Rust | Config upload (PE protocol) | dev machine |
 | `pedalboard-bridge` | Rust | WebSocket↔MIDI bridge (JACK MIDI + mod-host) | CM5 |
 | `pedalboard-sim` | Rust | Virtual pedalboard simulator (TUI + Web UI) | dev machine |
 | `pedalboard-os` | Docker/Makefile | System config (JACK + mod-host + bridge) | CM5 |

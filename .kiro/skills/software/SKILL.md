@@ -23,7 +23,7 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), 
 - `or_else` on `Option` short-circuits — don't use for polling multiple inputs; use `heapless::Vec`
 - `Mono::delay().await` in loop is less precise than `spawn_after`
 - USB send task must loop waiting for configured state, not return early
-- `defmt` feature removed from opendeck dep to allow host-side testing
+- `defmt` feature removed from protocol dep to allow host-side testing
 - Host tests: `cargo test --lib --target x86_64-unknown-linux-gnu`
 
 ## Encoders
@@ -40,11 +40,6 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), 
 
 - Factory reset erases flash but does NOT reboot — in-memory config stays until power cycle.
 
-## OpenDeck Protocol Gotchas
-
-- `ChannelOrAll::Channel(n)`: 0-based internal, 1-based wire format
-- `Led::get()` returns protocol-encoded u16 — don't roundtrip via `From<u16>` internally
-- Use `channel_direct()` for internal access, `get()/set()` only for serialization
 
 ## Cross-Repo Development Workflow
 
@@ -76,8 +71,3 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), 
 - `pe_handler.rs` is a thin hardware adapter only
 - **When extending the protocol**, follow `midi-controller/CONTRIBUTING.md` (checklist: protocol → CLI → firmware, docs locations, push order)
 
-## OpenDeck Policy
-
-- **Frozen** — maintain, don't extend
-- LED rings = single LEDs in OpenDeck mode; only slot 0; multi-preset requires PE
-- PE presets take priority (checked via `name.is_empty()`)
