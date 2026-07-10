@@ -33,6 +33,8 @@ reaching for a mouse.
 - **MIDI Clock + Tap Tempo** — sync tempo with loopers and delay pedals
 - **32 presets** with per-preset defaults, state recall across power cycles
 - **Neural amp modeling** — AIDA-X on CM5, 1.3ms latency, 3.4% CPU per model
+- **Instant tone switching** — all amp models pre-loaded, switch between clean/crunch/lead with zero audio gap
+- **Per-scene expression pedals** — same pedal controls volume in clean, gain in lead — reassigns automatically per tone
 - **LV2 plugin ecosystem** — hundreds of open source effects (reverb, delay, chorus, EQ)
 - **MOD UI** — drag-and-drop plugin routing in the browser
 - **30mm flat case** — sits under your foot, not on top of your pedalboard
@@ -74,7 +76,7 @@ The hardware architecture is modular. Two independent processors handle MIDI and
 | [MIDI Firmware](https://github.com/pedalboard/pedalboard-midi) | RP-2040 firmware (Rust/RTIC) — buttons, LEDs, encoders, MIDI, display |
 | [Simulator](https://github.com/pedalboard/pedalboard-sim) | Virtual pedalboard (TUI + Web UI) — develop and test without hardware |
 | [CLI](https://github.com/pedalboard/pedalboard-cli) | Configuration tool — YAML setlists → device upload |
-| [Bridge](https://github.com/pedalboard/pedalboard-bridge) | WebSocket↔MIDI bridge + audio patch switching via mod-host |
+| [Bridge](https://github.com/pedalboard/pedalboard-bridge) | MIDI routing + audio tone switching + expression pedal control |
 | [OS](https://github.com/pedalboard/pedalboard-os) | System config — Debian + JACK + mod-host auto-start |
 | [Controller](https://github.com/pedalboard/midi-controller) | MIDI controller engine — input processing, LED rendering, preset state, PE framing |
 | [Software Architecture](https://github.com/pedalboard/.github/blob/main/docs/software-architecture.md) | System overview, task structure, PE data flow |
