@@ -144,3 +144,16 @@ When adding a new feature, ask:
 3. Does it make sense in standalone mode? → Must work without audio section.
 
 **Never require the user to configure the controller when the audio config already expresses the intent.**
+
+### CC and channel allocation
+
+When the compile tool auto-generates controller configuration from audio, it must not conflict with user-defined MIDI assignments. Strategy:
+
+1. **Scan all explicit presets** — collect every CC number + channel pair already in use
+2. **Allocate internal CCs from unused space** — auto-generated snapshot buttons, expression routing, etc. use CCs that don't appear in any user-defined button/encoder/analog config
+3. **Use a dedicated internal channel** — prefer channel 16 (or the highest unused channel) for bridge-internal messages that never leave the device. User's external gear typically lives on channels 1-10.
+4. **Document the allocation** — the compiled output includes a comment or metadata showing which CCs were auto-assigned, so the user can see what happened
+
+Example: user defines buttons on channel 1 (CC 80, 81, 82) and channel 2 (PC 0-3). The compile tool assigns audio snapshot switching to channel 16, CC 0-2 — guaranteed no conflict.
+
+**Principle:** auto-generated MIDI never interferes with user-defined MIDI. The compile tool is aware of the full configuration and avoids collisions deterministically.
