@@ -7,7 +7,6 @@ This is the GitHub organisation repository (`.github`). It contains:
   - [Software Architecture](docs/software-architecture.md)
   - [Audio Integration](docs/audio-integration.md)
   - [Hardware Architecture](docs/hardware-architecture.md)
-  - [Launch Plan](docs/launch-plan.md)
 - **[docs/adr/](docs/adr/)** — Architecture Decision Records
   - [001 — Versioning](docs/adr/001-versioning.md)
   - [002 — Timestamped Events](docs/adr/002-timestamped-events.md)
