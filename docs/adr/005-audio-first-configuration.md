@@ -152,6 +152,8 @@ When the compile tool auto-generates controller configuration from audio, it mus
 1. **Scan all explicit presets** — collect every CC number + channel pair already in use
 2. **Allocate internal CCs from unused space** — auto-generated snapshot buttons, expression routing, etc. use CCs that don't appear in any user-defined button/encoder/analog config
 3. **Use a dedicated internal channel** — default: channel 16. Configurable via `global.internal_channel`. This channel carries bridge-internal messages (snapshot switching, expression routing) that never leave the device toward external gear. User's external gear typically lives on channels 1-10.
+   - **Routing rule:** messages on the internal channel are never forwarded to DIN or USB output. They are consumed by the bridge only. This prevents auto-generated snapshot switching from leaking to external gear.
+   - The firmware applies this filter before thru routing: if `msg.channel == internal_channel`, skip DIN/USB output, forward to bridge only.
 4. **Document the allocation** — the compiled output includes a comment or metadata showing which CCs were auto-assigned, so the user can see what happened
 
 Example: user defines buttons on channel 1 (CC 80, 81, 82) and channel 2 (PC 0-3). The compile tool assigns audio snapshot switching to channel 16, CC 0-2 — guaranteed no conflict.
