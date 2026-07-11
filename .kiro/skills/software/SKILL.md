@@ -8,6 +8,52 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), 
 > Architecture details: `dotgithub/docs/software-architecture.md` (cross-module), `pedalboard-midi/docs/architecture.md` (firmware)
 > Unsafe policy: `pedalboard-midi/docs/adr/002-unsafe-code-policy.md`
 
+## Architectural Principles (MUST follow)
+
+### ADR-003: Controller Owns Routing
+
+ALL MIDI logic and routing decisions belong in the `midi-controller` crate:
+- Input event processing (buttons → CC, encoders → CC, expression → CC)
+- Output port routing (which messages go to DIN, USB, BLE)
+- Thru routing (incoming DIN→USB, USB→DIN)
+- Output filtering (internal channel → USB only, future per-message rules)
+- Reactive LED triggers from incoming CC
+- Preset switching, state management, tap tempo
+
+The firmware (`pedalboard-midi`) is a **pure I/O adapter**:
+- Feed hardware events into `Controller::process()`
+- Dispatch `Output.midi` to physical ports by reading `msg.dest` port flags
+- Never make routing decisions — just obey the Controller's output
+
+When implementing any MIDI-related feature, put the logic in `midi-controller`, not in firmware or CLI.
+
+### ADR-006: Thin Frontends, Smart Backend
+
+Frontends (CLI, sim, future apps) are **presentation only**. All logic lives in shared crates:
+
+| Belongs in shared code | Does NOT belong in frontend |
+|------------------------|-----------------------------|
+| Validation | ❌ CLI validates |
+| Protocol encoding (PE) | ❌ CLI builds SysEx |
+| Default generation | ❌ CLI generates buttons |
+| Audio config resolution | ❌ CLI resolves snapshots |
+| CC allocation | ❌ CLI picks CC numbers |
+
+Shared logic lives in:
+- `midi-controller` — protocol, types, routing, controller engine
+- `pedalboard-config` — schema, YAML parsing, validation, compilation
+- `pedalboard-bridge` — audio state, runtime control, mod-host abstraction
+
+Test: *"If someone builds a different UI, would they rewrite this?"* → put it in a shared crate.
+
+### Consequence for new features
+
+1. **New MIDI behavior** → `midi-controller` crate (unit tested, no_std)
+2. **New config field** → `midi-controller` (binary) + `pedalboard-config` (YAML) + schema regeneration
+3. **New compile/generation logic** → `pedalboard-config` crate (not CLI directly)
+4. **New runtime behavior** → bridge (audio) or firmware (I/O dispatch)
+5. **New UI command** → CLI calls into shared crates, formats output
+
 ## Stack and Memory Constraints (RP2040)
 
 - `Preset` = 1.4KB in memory, ~130 bytes serialized. `Config` = 45KB (32 presets).
@@ -38,7 +84,8 @@ description: Firmware (Rust/RTIC on RP2040), PE protocol, bridge (Rust on CM5), 
 
 ## Firmware Gotcha
 
-- Factory reset erases flash but does NOT reboot — in-memory config stays until power cycle.
+- Factory reset now reboots automatically (1s delay for USB flush before sys_reset)
+- `--wait` flag on CLI reboot/reset polls for device readiness (two-phase: offline → online + 2s settle)
 
 
 ## Cross-Repo Development Workflow

@@ -2,7 +2,10 @@
 
 ## Status
 
-Accepted (2026-07-09) — Design agreed, implementation pending (issue midi-controller#12).
+Accepted (2026-07-09) — **Implemented** (2026-07-11).
+
+Routing, thru, output filtering, and reactive LEDs all live in the Controller.
+Firmware is a pure I/O dispatcher using `MidiPort` dest flags.
 
 ## Context
 
