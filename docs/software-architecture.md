@@ -124,16 +124,42 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    PROTOCOL[midi-controller<br/>Config · Actions · PE framing]
-    
-    MIDI_FW[pedalboard-midi<br/>Firmware]
-    CLI_APP[pedalboard-cli<br/>YAML → PE upload]
-    SIM_APP[pedalboard-sim<br/>Virtual pedalboard]
+    LED_RING[led-ring<br/>LED pattern rendering · no_std]
+    PROTOCOL[midi-controller<br/>Controller engine · PE framing · Config types · no_std]
+    CONFIG[pedalboard-config<br/>YAML schema · validation · compiler]
+
+    LED_RING --> PROTOCOL
+
+    MIDI_FW[pedalboard-midi<br/>Firmware · RP2040]
+    CLI_APP[pedalboard-cli<br/>Upload · status · flash]
+    SIM_APP[pedalboard-sim<br/>Virtual pedalboard · TUI + Web]
     BRIDGE_APP[pedalboard-bridge<br/>JACK MIDI + WebSocket + mod-host]
 
     MIDI_FW --> PROTOCOL
     CLI_APP --> PROTOCOL
+    CLI_APP --> CONFIG
     SIM_APP --> PROTOCOL
+    SIM_APP --> CONFIG
+    BRIDGE_APP --> PROTOCOL
+    BRIDGE_APP --> CONFIG
+    CONFIG --> PROTOCOL
     BRIDGE_APP -.->|JACK MIDI| MIDI_FW
     CLI_APP -->|WebSocket| BRIDGE_APP
 ```
+
+### Shared Libraries
+
+| Crate | Purpose | Constraints |
+|-------|---------|-------------|
+| [`led-ring`](https://github.com/pedalboard/led-ring) | LED pattern rendering (fill, dots, pulse, rotate) | `no_std`, runs on RP2040 |
+| [`midi-controller`](https://github.com/pedalboard/midi-controller) | Controller engine: input processing, LED state, preset management, PE framing, config types | `no_std`, shared between firmware and all host-side tools |
+| [`pedalboard-config`](https://github.com/pedalboard/pedalboard-config) | YAML setlist schema, validation, ADR-005 compiler (audio → button generation) | `std`, shared between CLI, sim, and bridge |
+
+### Design Principle (ADR-006: Thin Frontends)
+
+All domain logic lives in the shared libraries. Frontends are thin wiring:
+
+- **CLI** — argument parsing → library calls → WebSocket I/O
+- **Sim** — input events → `midi-controller::Controller` → MIDI output
+- **Bridge** — JACK MIDI ↔ WebSocket relay, delegates config to `pedalboard-config`
+- **Firmware** — RTIC tasks → `midi-controller::Controller` → USB MIDI + LEDs + display

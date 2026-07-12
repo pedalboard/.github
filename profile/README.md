@@ -79,6 +79,8 @@ The hardware architecture is modular. Two independent processors handle MIDI and
 | [Bridge](https://github.com/pedalboard/pedalboard-bridge) | MIDI routing + audio tone switching + expression pedal control |
 | [OS](https://github.com/pedalboard/pedalboard-os) | System config — Debian + JACK + mod-host auto-start |
 | [Controller](https://github.com/pedalboard/midi-controller) | MIDI controller engine — input processing, LED rendering, preset state, PE framing |
+| [Config](https://github.com/pedalboard/pedalboard-config) | Shared library — YAML schema, validation, ADR-005 compiler |
+| [LED Ring](https://github.com/pedalboard/led-ring) | Shared library — LED pattern rendering (fill, dots, pulse, rotate) |
 | [Software Architecture](https://github.com/pedalboard/.github/blob/main/docs/software-architecture.md) | System overview, task structure, PE data flow |
 
 ### Audio Stack
