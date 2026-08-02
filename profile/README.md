@@ -66,7 +66,6 @@ The hardware architecture is modular. Two independent processors handle MIDI and
 | [Main Board](https://pedalboard.github.io/pedalboard-hw/latest/)        | CM5 carrier, RP-2040 MIDI controller, 6 buttons, 2 encoders         | <img src="https://pedalboard.github.io/pedalboard-hw/latest/3D/pedalboard-hw-3D_blender_1_top.png" alt="Main Board" width="200"> |
 | [Display Board](https://pedalboard.github.io/pedalboard-display/latest/)| 8 RGB LED rings + 2 OLED display ports                               | <img src="https://pedalboard.github.io/pedalboard-display/latest/3D/pedalboard-display-3D_blender_1_top.png" alt="Display Board" width="200"> |
 | [Sound Card](https://pedalboard.github.io/pedalboard-soundcard/latest/) | I²S audio codec HAT — PCM1863 ADC (106dB SNR) + PCM5242 DAC (112dB) | <img src="https://pedalboard.github.io/pedalboard-soundcard/latest/3D/pedalboard-soundcard-3D_blender_1_top.png" alt="Sound Card" width="200"> |
-| [RGB LED Ring](https://github.com/pedalboard/pedalboard-led-ring)       | RGB LED ring around foot button                                      | |
 | [Mechanical Parts](https://github.com/pedalboard/pedalboard-case)       | CNC aluminum case, plexiglass flush-mount parts, drill templates      | <img src="https://raw.githubusercontent.com/pedalboard/pedalboard-case/main/generated/led-ring-flush.png" alt="LED Ring" width="200"> |
 
 ### Software
